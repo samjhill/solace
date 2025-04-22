@@ -10,3 +10,4 @@ I plan to work on the backend a bit after this, so I wanted to ensure that it wa
 
 [Added pagination and real search](https://github.com/samjhill/solace/pull/3)
 
+[Cleaned up the UI's look](https://github.com/samjhill/solace/pull/4)
