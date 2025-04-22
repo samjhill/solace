@@ -4,11 +4,15 @@ import { useEffect, useState } from "react";
 import type { Advocate } from '@/types/advocate';
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [advocates, setAdvocates] = useState([]);
   const [filteredAdvocates, setFilteredAdvocates] = useState([]);
 
   useEffect(() => {
-    console.log("fetching advocates...");
+    setLoading(true);
+    setError(null);
+    
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
         setAdvocates(jsonResponse.data);
@@ -16,8 +20,11 @@ export default function Home() {
       });
     }).catch((error) => {
       console.error('Error fetching data:', error);
-      // TODO: Display error message to the user
-    })
+
+      setError(error);
+    }).finally(() => {
+      setLoading(false);
+    });
   }, []);
 
   const onChange = (e) => {
@@ -62,7 +69,21 @@ export default function Home() {
       </div>
       <br />
       <br />
-      <table>
+      {/* loading and error states */}
+      {loading && <p className="text-gray-500">Loading advocates...</p>}
+      {error && (
+        <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+          {error}
+        </div>
+      )}
+
+      {!loading && !error && filteredAdvocates.length === 0 && (
+        <p className="text-gray-600">No advocates found.</p>
+      )}
+      {/* end loading and error states */}
+
+      {!loading && !error && advocates.length > 0 && filteredAdvocates.length > 0 && (
+        <table>
         <thead>
           <tr>
           <th>First Name</th>
@@ -94,6 +115,7 @@ export default function Home() {
           })}
         </tbody>
       </table>
+      )}
     </main>
   );
 }
