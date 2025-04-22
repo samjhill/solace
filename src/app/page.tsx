@@ -24,12 +24,10 @@ export default function Home() {
     const searchTerm = e.target.value;
 
     document.getElementById("search-term").innerHTML = searchTerm;
+    
+    const term = searchTerm.toLowerCase();
 
-    console.log("filtering advocates...");
-    
     const filteredAdvocates = advocates.filter((advocate: Advocate) => {
-      const term = searchTerm.toLowerCase();
-    
       return (
         advocate.firstName.toLowerCase().includes(term) ||
         advocate.lastName.toLowerCase().includes(term) ||
