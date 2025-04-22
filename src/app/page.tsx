@@ -71,7 +71,7 @@ export default function Home() {
         <p className="text-gray-600">No advocates found.</p>
       )}
 
-      {!loading && !error && advocates.length > 0 && filteredAdvocates.length > 0 && (
+      {!loading && !error && advocates?.length > 0 && filteredAdvocates.length > 0 && (
         <>
           <table>
             <thead>
