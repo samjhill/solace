@@ -1,4 +1,4 @@
-import { asc } from "drizzle-orm";
+import { asc, ilike } from "drizzle-orm";
 import db from "../../../db";
 import { advocates } from "../../../db/schema";
 
@@ -18,6 +18,7 @@ export async function GET(req: Request) {
     const data = await db
       .select()
       .from(advocates)
+      .where(searchTerm ? ilike(advocates.lastName, `%${searchTerm}%`) : undefined)
       .orderBy(asc(advocates.id))
       .limit(limit) // the number of rows to return
       // .offset(4); // the number of rows to skip
