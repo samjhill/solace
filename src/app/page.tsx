@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Advocate } from '@/types/advocate';
 
 export default function Home() {
   const [advocates, setAdvocates] = useState([]);
@@ -22,14 +23,14 @@ export default function Home() {
     document.getElementById("search-term").innerHTML = searchTerm;
 
     console.log("filtering advocates...");
-    const filteredAdvocates = advocates.filter((advocate) => {
+    const filteredAdvocates = advocates.filter((advocate: Advocate) => {
       return (
         advocate.firstName.includes(searchTerm) ||
         advocate.lastName.includes(searchTerm) ||
         advocate.city.includes(searchTerm) ||
         advocate.degree.includes(searchTerm) ||
         advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.includes(searchTerm)
+        `${advocate.yearsOfExperience}`.includes(searchTerm)
       );
     });
 
