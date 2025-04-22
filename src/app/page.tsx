@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Advocate } from '@/types/advocate';
 
 export default function Home() {
   const [advocates, setAdvocates] = useState([]);
@@ -13,25 +14,30 @@ export default function Home() {
         setAdvocates(jsonResponse.data);
         setFilteredAdvocates(jsonResponse.data);
       });
-    });
+    }).catch((error) => {
+      console.error('Error fetching data:', error);
+      // TODO: Display error message to the user
+    })
   }, []);
 
   const onChange = (e) => {
     const searchTerm = e.target.value;
 
     document.getElementById("search-term").innerHTML = searchTerm;
+    
+    const term = searchTerm.toLowerCase();
 
-    console.log("filtering advocates...");
-    const filteredAdvocates = advocates.filter((advocate) => {
+    const filteredAdvocates = advocates.filter((advocate: Advocate) => {
       return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.includes(searchTerm)
+        advocate.firstName.toLowerCase().includes(term) ||
+        advocate.lastName.toLowerCase().includes(term) ||
+        advocate.city.toLowerCase().includes(term) ||
+        advocate.degree.toLowerCase().includes(term) ||
+        advocate.specialties.some((spec) => spec.toLowerCase().includes(term)) ||
+        `${advocate.yearsOfExperience}`.toLowerCase().includes(term)
       );
     });
+    
 
     setFilteredAdvocates(filteredAdvocates);
   };
@@ -58,6 +64,7 @@ export default function Home() {
       <br />
       <table>
         <thead>
+          <tr>
           <th>First Name</th>
           <th>Last Name</th>
           <th>City</th>
@@ -65,18 +72,19 @@ export default function Home() {
           <th>Specialties</th>
           <th>Years of Experience</th>
           <th>Phone Number</th>
+          </tr>
         </thead>
         <tbody>
-          {filteredAdvocates.map((advocate) => {
+          {filteredAdvocates.map((advocate: Advocate) => {
             return (
-              <tr>
+              <tr key={advocate.phoneNumber}>
                 <td>{advocate.firstName}</td>
                 <td>{advocate.lastName}</td>
                 <td>{advocate.city}</td>
                 <td>{advocate.degree}</td>
                 <td>
                   {advocate.specialties.map((s) => (
-                    <div>{s}</div>
+                    <div key={s}>{s}</div>
                   ))}
                 </td>
                 <td>{advocate.yearsOfExperience}</td>
