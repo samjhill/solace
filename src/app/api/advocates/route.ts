@@ -24,12 +24,11 @@ export async function GET(req: Request) {
           ilike(advocates.lastName, `%${searchTerm}%`),
           ilike(advocates.city, `%${searchTerm}%`),
           ilike(advocates.degree, `%${searchTerm}%`),
-          // TODO ilike(advocates.phoneNumber, `%${searchTerm}%`)
         )
       : undefined)
       .orderBy(asc(advocates.id))
       .limit(limit)
-      .offset(skip); 
+      .offset(skip);
 
     return Response.json({
       data,
