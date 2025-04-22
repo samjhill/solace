@@ -10,6 +10,7 @@ export interface Advocate {
     degree: string;
     yearsOfExperience: number;
     location?: string;
+    phoneNumber: string;
     languagesSpoken?: string[];
     available?: boolean;
     createdAt?: string; // ISO date string

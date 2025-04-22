@@ -14,7 +14,10 @@ export default function Home() {
         setAdvocates(jsonResponse.data);
         setFilteredAdvocates(jsonResponse.data);
       });
-    });
+    }).catch((error) => {
+      console.error('Error fetching data:', error);
+      // TODO: Display error message to the user
+    })
   }, []);
 
   const onChange = (e) => {
@@ -74,7 +77,7 @@ export default function Home() {
           </tr>
         </thead>
         <tbody>
-          {filteredAdvocates.map((advocate) => {
+          {filteredAdvocates.map((advocate: Advocate) => {
             return (
               <tr key={advocate.phoneNumber}>
                 <td>{advocate.firstName}</td>
